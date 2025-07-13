@@ -6,8 +6,9 @@ A comprehensive Retrieval-Augmented Generation (RAG) application built with Next
 
 - **🔐 Secure Authentication**: Email/password + OAuth (Google, GitHub) with NextAuth.js
 - **👥 Role-Based Access**: User and Admin roles with granular permissions
-- **🤖 Flexible AI Providers**: Easy switching between OpenAI, Cohere, and HuggingFace
-- **📚 Knowledge Base**: PostgreSQL + Pinecone vector database for document storage
+- **🤖 Flexible AI Providers**: Easy switching between OpenAI, Perplexity for Completions and Open AI for embeddings
+- **📚 Knowledge Base Management**: Document CRUD operations with PostgreSQL + Pinecone vector database
+- **🌐 URL Ingestion & Web Parsing**: Intelligent web content extraction, parsing, and storage
 - **💬 Agentic Chatbot**: LangChain-powered intelligent assistant with modern UI
 - **⚡ Performance Optimized**: Intelligent caching, database indexes, and query optimization
 - **🎨 Modern UI/UX**: Clean, responsive design with accessibility features
@@ -34,20 +35,6 @@ The application supports multiple embedding providers. Simply set the `EMBEDDING
 EMBEDDING_PROVIDER=openai
 OPENAI_API_KEY=sk-your-openai-key
 OPENAI_EMBEDDING_MODEL=text-embedding-3-small  # Optional
-```
-
-#### Cohere
-```bash
-EMBEDDING_PROVIDER=cohere
-COHERE_API_KEY=your-cohere-key
-COHERE_EMBEDDING_MODEL=embed-english-v3.0  # Optional
-```
-
-#### HuggingFace
-```bash
-EMBEDDING_PROVIDER=huggingface
-HUGGINGFACE_API_KEY=your-hf-token  # Optional for public models
-HUGGINGFACE_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2  # Optional
 ```
 
 ### Vector Database (Pinecone)
@@ -340,6 +327,8 @@ yarn dev  # Will show specific missing variables
 - **Vector Store**: Pinecone with intelligent chunking and retrieval
 - **Authentication**: NextAuth.js with multiple OAuth providers
 - **AI Framework**: LangChain with modular RAG implementation
+
+For detailed system architecture, design decisions, and component interactions, see [**Project Architecture**](project-architecture.md).
 
 ### Recent Performance Optimizations (Phase 4)
 
