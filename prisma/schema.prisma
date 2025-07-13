@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid()) @map("user_id") @db.Uuid
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified") @db.Timestamptz(6)
+  image         String?
+  password      String?   // For credentials authentication
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  accounts      Account[]
+}
+
+model Account {
+  id                String  @id @default(uuid()) @map("account_id") @db.Uuid
+  userId            String  @map("user_id") @db.Uuid
+  type              String  @db.VarChar(255)
+  provider          String  @db.VarChar(255)
+  providerAccountId String  @map("provider_account_id") @db.VarChar(255)
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String? @db.VarChar(255)
+  scope             String? @db.VarChar(255)
+  id_token          String?
+  session_state     String? @db.VarChar(255)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model VerificationToken {
+  identifier String   @db.VarChar(255)
+  token      String   @unique @db.VarChar(255)
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Document {
+  id              String    @id @default(uuid()) @map("document_id") @db.Uuid
+  sourceUrl       String?   @map("source_url")
+  filePath        String?   @map("file_path")
+  title           String
+  author          String?
+  publicationDate DateTime? @map("publication_date") @db.Date
+  documentType    String?   @map("document_type") @db.VarChar(50)
+  tags            String[]
+  metadata        Json?
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  chunks          Chunk[]
+
+  // Performance indexes
+  @@index([createdAt(sort: Desc)], name: "idx_documents_created_at")
+  @@index([documentType], name: "idx_documents_type")
+  @@index([title], name: "idx_documents_title")
+  @@index([tags], name: "idx_documents_tags")
+  @@map("documents")
+}
+
+model Chunk {
+  id                 String   @id @default(uuid()) @map("chunk_id") @db.Uuid
+  documentId         String   @map("document_id") @db.Uuid
+  chunkText          String   @map("chunk_text")
+  chunkNumber        Int?     @map("chunk_number")
+  startOffset        Int?     @map("start_offset")
+  endOffset          Int?     @map("end_offset")
+  embeddingModelName String   @map("embedding_model_name") @db.VarChar(100)
+  createdAt          DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  document           Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // Performance indexes
+  @@index([documentId], name: "idx_chunks_document_id")
+  @@index([chunkNumber], name: "idx_chunks_number")
+  @@index([embeddingModelName], name: "idx_chunks_embedding_model")
+  @@map("chunks")
+}
+
+model ContactFormSubmission {
+  id          String   @id @default(uuid()) @map("submission_id") @db.Uuid
+  name        String   @db.VarChar(255)
+  email       String   @db.VarChar(255)
+  companyName String?  @map("company_name") @db.VarChar(255)
+  phoneNumber String?  @map("phone_number") @db.VarChar(50)
+  subject     String   @db.VarChar(500)
+  message     String   @db.Text
+  status      SubmissionStatus @default(NEW)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // Performance indexes
+  @@index([createdAt(sort: Desc)], name: "idx_contact_submissions_created_at") 
+  @@index([status], name: "idx_contact_submissions_status")
+  @@index([email], name: "idx_contact_submissions_email")
+  @@map("contact_form_submissions")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SubmissionStatus {
+  NEW
+  REVIEWED
+  RESPONDED
+  ARCHIVED
+}
