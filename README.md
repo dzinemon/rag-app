@@ -421,18 +421,9 @@ The application supports multiple AI providers with zero code changes:
 
 ### Embedding Providers
 ```bash
-# OpenAI (Recommended)
+# OpenAI (default)
 EMBEDDING_PROVIDER=openai
 OPENAI_API_KEY=sk-your-key
-
-# Cohere
-EMBEDDING_PROVIDER=cohere
-COHERE_API_KEY=your-cohere-key
-
-# HuggingFace
-EMBEDDING_PROVIDER=huggingface
-HUGGINGFACE_API_KEY=hf-your-token  # Optional for public models
-```
 
 ### Chat Providers
 ```bash
@@ -451,21 +442,10 @@ PERPLEXITY_API_KEY=pplx-your-key
 
 ### Project Documentation
 - [**Project Architecture**](project-architecture.md) - Detailed system architecture and design decisions
-- [**RAG Service Optimization**](docs/milestone-3.2-enhanced-chat-completion.md) - Recent performance improvements
-- [**Performance Optimization Summary**](docs/performance-optimization-summary.md) - Database and query optimizations
-- [**OAuth Troubleshooting**](docs/oauth-troubleshooting-guide.md) - Authentication setup guide
 - [**Testing Guide**](TESTING.md) - Comprehensive testing documentation
-
-### Key Features Documentation
-- [**Chat Response Enhancement**](docs/chat-response-enhancement.md) - Modern chat interface features
-- [**Document Deletion**](docs/document-deletion.md) - Knowledge base management
-- [**Provider Configuration**](docs/provider-configuration.md) - AI provider setup guide
-- [**Perplexity Integration**](docs/perplexity-integration.md) - Alternative chat provider setup
 
 ### Development Resources
 - [**Scripts README**](scripts/README.md) - Available development and testing scripts
-- [**Vector Store Analysis**](vectorstore-usage-analysis.md) - Vector database optimization insights
-- [**Project Completion Summary**](docs/project-completion-summary.md) - Full project overview
 
 ### External Resources
 - [Next.js Documentation](https://nextjs.org/docs)
@@ -475,5 +455,3 @@ PERPLEXITY_API_KEY=pplx-your-key
 - [NextAuth.js Documentation](https://next-auth.js.org)
 
 ---
-
-**Built with ❤️ using Next.js, TypeScript, LangChain, and modern web technologies.**
